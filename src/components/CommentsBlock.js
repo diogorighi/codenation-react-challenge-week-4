@@ -14,9 +14,14 @@ class CommentsBlock extends Component {
     };
   }
 
-  updateComments = () => {
+  getRecipeSlug = () => {
     const { recipe } = this.props;
-    const comments = commentsService.get(slugify(recipe.title));
+    return slugify(recipe.title);
+  };
+
+  updateComments = () => {
+    const recipeSlug = this.getRecipeSlug();
+    const comments = commentsService.get(recipeSlug);
     this.setState({
       comments
     });
@@ -39,7 +44,7 @@ class CommentsBlock extends Component {
           <FontAwesomeIcon
             icon="trash"
             onClick={() => {
-              commentsService.delete(slugify(this.props.recipe.title), comment);
+              commentsService.delete(this.getRecipeSlug(), comment);
               this.updateComments();
             }}
           />
@@ -49,8 +54,7 @@ class CommentsBlock extends Component {
 
   handleFormSubmit = e => {
     e.preventDefault();
-    const { recipe } = this.props;
-    const recipeSlug = slugify(recipe.title);
+    const recipeSlug = this.getRecipeSlug();
     commentsService.insert(recipeSlug, { text: this.state.formComment });
     this.setState({
       formComment: ""

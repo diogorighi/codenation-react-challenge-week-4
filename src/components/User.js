@@ -1,5 +1,5 @@
 import React from "react";
-import { getUser, logout } from "../services/loginService";
+import { logout } from "../services/loginService";
 
 const User = ({ history }) => (
   <button
