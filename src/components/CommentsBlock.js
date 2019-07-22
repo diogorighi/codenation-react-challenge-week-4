@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { slugify } from "../helpers";
 import commentsService from "../services/commentsService";
 import loginService from "../services/loginService";
+import PropTypes from "prop-types";
 
 class CommentsBlock extends Component {
   constructor(props) {
@@ -16,6 +17,9 @@ class CommentsBlock extends Component {
 
   getRecipeSlug = () => {
     const { recipe } = this.props;
+    if (!recipe) {
+      return "";
+    }
     return slugify(recipe.title);
   };
 
@@ -31,8 +35,11 @@ class CommentsBlock extends Component {
     this.updateComments();
   };
 
-  renderComment = comment => (
-    <div key={comment.date} className="Comment media text-muted pt-3">
+  renderComment = (comment, index) => (
+    <div
+      key={`${comment.date}_${index}`}
+      className="Comment media text-muted pt-3"
+    >
       <FontAwesomeIcon className="mr-2" size="3x" icon="user-circle" />
       <p className="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
         <strong className="d-block text-gray-dark">@{comment.author}</strong>
@@ -67,7 +74,9 @@ class CommentsBlock extends Component {
       <div className="text-left">
         <div className="my-3 p-3 bg-white rounded shadow-sm">
           <h6 className="border-bottom border-gray pb-2 mb-0">Comments</h6>
-          {this.state.comments.map(comment => this.renderComment(comment))}
+          {this.state.comments.map((comment, index) =>
+            this.renderComment(comment, index)
+          )}
         </div>
 
         <form onSubmit={this.handleFormSubmit}>
@@ -95,5 +104,10 @@ class CommentsBlock extends Component {
     );
   }
 }
+
+CommentsBlock.propTypes = {
+  searchString: PropTypes.string,
+  recipe: PropTypes.object
+};
 
 export default CommentsBlock;

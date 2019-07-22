@@ -55,7 +55,13 @@ class Login extends Component {
   }
 
   render = () => (
-    <form className="form-signin" onSubmit={e => e.preventDefault()}>
+    <form
+      className="form-signin"
+      onSubmit={e => {
+        e.preventDefault();
+        this.handleSubmit();
+      }}
+    >
       <div className="text-center mb-4">
         <h1 className="h3 mb-3 font-weight-normal">Login / Register</h1>
       </div>
@@ -89,14 +95,14 @@ class Login extends Component {
         <button
           className="login btn btn-lg btn-primary btn-block"
           type="submit"
-          onClick={this.handleLoginButtonClick}
+          onClick={() => (this.handleSubmit = this.handleLoginButtonClick)}
         >
           Login
         </button>
         <button
           className="register btn btn-lg btn-secondary btn-block"
           type="submit"
-          onClick={this.handleRegisterButtonClick}
+          onClick={() => (this.handleSubmit = this.handleRegisterButtonClick)}
         >
           Register
         </button>
